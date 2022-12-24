@@ -4,8 +4,8 @@ import response
 
 async def send_message(message, user_message, is_private):
     try:
-        response = response.get_response(user_message)
-        await message.author.send(response) if is_private else await message.channel.send(response)
+        rep = response.get_response(user_message)
+        await message.author.send(rep) if is_private else await message.channel.send(rep)
 
     except Exception as e:
         print(e)
