@@ -1,14 +1,27 @@
 import discord
-import response
+import datetime
+import random
 
 
-async def send_message(message, user_message, is_private):
-    try:
-        rep = response.get_response(user_message)
-        await message.author.send(rep) if is_private else await message.channel.send(rep)
+def get_response(message):
+    message = message.lower()
+    if message == 'random':
+        return str(random.randint(1, 6000))
+    elif message == 'time':
+        current_time = datetime.datetime.now().strftime("%I:%M %p")
+        return current_time
+    elif message == 'flip':
+        number = random.randint(1,2)
+        if number ==  1:
+            return "heads"
+        else:
+            return 'tails'
+    if message == '!help':
+        return '`random\ntime\nflip`'
+    return "Bad input"
 
-    except Exception as e:
-        print(e)
+   
+        
 
 
 def run_discord_bot():
@@ -17,26 +30,26 @@ def run_discord_bot():
     intents.message_content = True
     client = discord.Client(intents=intents)
 
+
     @client.event
     async def on_ready():
-        
         print(f'{client.user} is now running!')
 
     @client.event
     async def on_message(message):
+        # if message.author.permissions_in(message.channel).manage_messages and message.content.lower() == "clear":
+        #     await message.channel.purge_from(limit=None)
         if message.author == client.user:
             return
-
-        username = str(message.author)
-        user_message = str(message.content)
-        channel = str(message.channel)
-
-        print(f'{username} said {user_message} in ({channel})')
-
-        if user_message[0] == '?':
-            user_message = user_message[1:]
-            await send_message(message, user_message, is_private=True)
-        else:
-            await send_message(message, user_message, is_private=False)
+        user_message = message.content
+        back = get_response(user_message)
+        await message.channel.send(back)
+        
 
     client.run(TOKEN)
+
+
+def main():
+    run_discord_bot()
+if __name__ =='__main__':
+    main()
