@@ -3,10 +3,10 @@ import datetime
 import random
 
 
-def get_response(message):
+def get_response(message, user_permissions):
     message = message.lower()
     if message == 'random':
-        return str(random.randint(1, 6000))
+        return str(random.randint(1, 10))
     elif message == 'time':
         current_time = datetime.datetime.now().strftime("%I:%M %p")
         return current_time
@@ -16,10 +16,11 @@ def get_response(message):
             return "heads"
         else:
             return 'tails'
-    if message == '!help':
-        return '`random\ntime\nflip`'
+    elif message == 'clear' and user_permissions.manage_messages:
+        return ''
+    elif message == '!help':
+        return '`random\ntime\nflip\nclear`'
     return "Bad input"
-
    
         
 
@@ -37,16 +38,18 @@ def run_discord_bot():
 
     @client.event
     async def on_message(message):
-        # if message.author.permissions_in(message.channel).manage_messages and message.content.lower() == "clear":
-        #     await message.channel.purge_from(limit=None)
+        if message.author.guild_permissions.manage_messages and message.content.lower() == "clear":
+            await message.channel.purge(limit=None)
         if message.author == client.user:
             return
+        user_permissions = message.author.guild_permissions
         user_message = message.content
-        back = get_response(user_message)
-        await message.channel.send(back)
+        back = get_response(user_message, user_permissions)
+        if back:
+            await message.channel.send(back)
+
         
 
-    client.run(TOKEN)
 
 
 def main():
