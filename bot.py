@@ -2,7 +2,6 @@ import discord
 import datetime
 import random
 
-
 def get_response(message, user_permissions):
     message = message.lower()
     if message == 'random':
@@ -21,49 +20,38 @@ def get_response(message, user_permissions):
     elif message == '!help':
         return '`random\ntime\nflip\nclear`'
     return "Bad input"
-   
-        
 
+TOKEN = 'MTA1NTcwMDYyMjU2NzAyMjYwMg.GKJR1v.eIVkG4Zc2qHhFN_UsL-cHkQYw5ad1jRCRLGd3g'
+intents = discord.Intents.default()
+intents.message_content = True
+client = discord.Client(intents=intents)
+
+@client.event
+async def on_member_join(member):
+    channel = discord.utils.get(member.guild.channels, name="welcome")
+    await channel.send(f'Welcome to the server {member.mention}')
+
+@client.event
+async def on_ready():
+    print(f'{client.user} is now running!')
+
+@client.event
+async def on_message(message):
+    if message.author.guild_permissions.manage_messages and message.content.lower() == "clear":
+        await message.channel.purge(limit=None)
+    if message.author == client.user:
+        return
+    user_permissions = message.author.guild_permissions
+    user_message = message.content
+    back = get_response(user_message, user_permissions)
+    if back:
+        await message.channel.send(back)
 
 def run_discord_bot():
-    TOKEN = 'MTA1NTcwMDYyMjU2NzAyMjYwMg.GKJR1v.eIVkG4Zc2qHhFN_UsL-cHkQYw5ad1jRCRLGd3g'
-    intents = discord.Intents.default()
-    intents.message_content = True
-    client = discord.Client(intents=intents)
-
-
-    @client.event
-    async def on_ready():
-        print(f'{client.user} is now running!')
-
-    @client.event
-    async def on_message(message):
-        if message.author.guild_permissions.manage_messages and message.content.lower() == "clear":
-            await message.channel.purge(limit=None)
-        if message.author == client.user:
-            return
-        user_permissions = message.author.guild_permissions
-        user_message = message.content
-        back = get_response(user_message, user_permissions)
-        if back:
-            await message.channel.send(back)
-    @client.event
-    async def on_member_join(member):
-        channel = discord.utils.get(member.guild.channels, name="welcome")
-        await channel.send(f'Welcome to the server {member.mention}')
-        
-        
-
-
-
-
-
-
-
     client.run(TOKEN)
-
 
 def main():
     run_discord_bot()
+
 if __name__ =='__main__':
     main()
