@@ -47,9 +47,20 @@ def run_discord_bot():
         back = get_response(user_message, user_permissions)
         if back:
             await message.channel.send(back)
-
+    @client.event
+    async def on_member_join(member):
+        channel = discord.utils.get(member.guild.channels, name="welcome")
+        await channel.send(f'Welcome to the server {member.mention}')
+        
         
 
+
+
+
+
+
+
+    client.run(TOKEN)
 
 
 def main():
