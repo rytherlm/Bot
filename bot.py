@@ -21,7 +21,7 @@ def get_response(message, user_permissions):
         return '`random\ntime\nflip\nclear`'
     return "Bad input"
 
-TOKEN = 'MTA1NTcwMDYyMjU2NzAyMjYwMg.GKJR1v.eIVkG4Zc2qHhFN_UsL-cHkQYw5ad1jRCRLGd3g'
+# TOKEN =#taken out becuase its mine lol
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
