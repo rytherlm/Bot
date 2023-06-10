@@ -1,5 +1,7 @@
 # Discord Bot
-![Example Image of the Bot In a Server](Bot/photo/exampleImage.png)
+![Example Image of the Bot In a Server](https://github.com/rytherlm/Bot/blob/main/photo/exampleImage.png)
+
+
 
 
 
