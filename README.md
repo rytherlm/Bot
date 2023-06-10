@@ -1,5 +1,5 @@
 # Discord Bot
-![Example Image of the Bot In a Server](./Bot/photo/Screenshot 2023-06-10 at 1.58.39 PM.png)
+![Example Image of the Bot In a Server](Bot/photo/Screenshot%202023-06-10%20at%201.58.39%20PM.png)
 
 
 
